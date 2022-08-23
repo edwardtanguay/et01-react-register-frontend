@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.scss';
 import { NavLink, Route, Routes, Navigate } from 'react-router-dom';
-
+import { IUser } from './interfaces';
 import { PageWelcome } from './pages/PageWelcome';
 import { PageMembers } from './pages/PageMembers';
 import { PageRegister } from './pages/PageRegister';
@@ -11,9 +13,25 @@ import { PageConfirmLink } from './pages/PageConfirmLink';
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
+	const [currentUser, setCurrentUser] = useState<IUser>({
+		username: '',
+		firstName: '',
+		lastName: '',
+		accessGroups: [] 
+	});
+
+	useEffect(() => {
+		(async () => {
+			const data = (await axios.get(`${baseUrl}/current-user`)).data;
+			const _currentUser = data.currentUser;
+			setCurrentUser(_currentUser);
+		})();
+	}, []);
+
 	return (
 		<div className="App">
 			<h1>Language Tandem Group</h1>
+			<pre>{currentUser.username}</pre>
 
 			<nav>
 				<NavLink to="/welcome">Welcome</NavLink>
