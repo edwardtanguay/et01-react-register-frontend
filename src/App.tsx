@@ -23,7 +23,11 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
-			const data = (await axios.get(`${baseUrl}/current-user`)).data;
+			const data = (
+				await axios.get(`${baseUrl}/current-user`, {
+					withCredentials: true,
+				})
+			).data;
 			const _currentUser = data.currentUser;
 			setCurrentUser(_currentUser);
 		})();
@@ -32,6 +36,13 @@ function App() {
 	return (
 		<div className="App">
 			<h1>Language Tandem Group</h1>
+			{currentUser.username !== 'anonymousUser' && (
+				<div className="userFullName">
+					<span>
+						{currentUser.firstName} {currentUser.lastName}
+					</span>
+				</div>
+			)}
 			<nav>
 				<NavLink to="/welcome">Welcome</NavLink>
 				{currentUser.accessGroups.includes('members') && (
@@ -51,7 +62,15 @@ function App() {
 					<Route path="/members" element={<PageMembers />} />
 				)}
 				<Route path="/register" element={<PageRegister />} />
-				<Route path="/login" element={<PageLogin baseUrl={baseUrl} />} />
+				<Route
+					path="/login"
+					element={
+						<PageLogin
+							baseUrl={baseUrl}
+							setCurrentUser={setCurrentUser}
+						/>
+					}
+				/>
 				{currentUser.accessGroups.includes('loggedInUsers') && (
 					<Route path="/logout" element={<PageLogout />} />
 				)}
