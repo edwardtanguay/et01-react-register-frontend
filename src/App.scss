@@ -32,8 +32,42 @@ body {
 
 	.page404 {
 		color: #333;
+
 		p {
 			font-size: 4rem;
+		}
+	}
+
+	form {
+		fieldset {
+			max-width: 15rem;
+			legend {
+				background-color: #333;
+				color: #777;
+				padding: .3rem;
+				border-radius: 5px;
+			}
+			background-color: #333;
+			border: 0;
+			padding: 1rem;
+			border-radius: 5px;
+
+			.row {
+				margin-bottom: 1rem;
+				label {
+					margin-bottom: .3rem;
+					display: block;
+				}
+				input {
+					width: 97%;
+					background-color: #ccc;
+				}
+			}
+
+			.buttonRow {
+				display: flex;
+				justify-content: right;
+			}
 		}
 	}
 
