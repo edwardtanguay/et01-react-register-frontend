@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { IUser } from '../interfaces';
+import { useNavigate } from 'react-router-dom';
 
 interface IPageLoginProps {
 	baseUrl: string;
@@ -12,6 +13,8 @@ export const PageLogin = (props: IPageLoginProps) => {
 	const [formMessage, setFormMessage] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+
+	const navigate = useNavigate();
 
 	const handleLoginButton = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
@@ -31,6 +34,7 @@ export const PageLogin = (props: IPageLoginProps) => {
 				setFormMessage('');
 				setUsername('');
 				setPassword('');
+				navigate('/members');
 			}
 		})();
 	};
