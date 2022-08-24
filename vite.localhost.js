@@ -1,0 +1,1 @@
+console.log('LOCAL: http://localhost:5173');
