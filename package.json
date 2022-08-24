@@ -4,9 +4,10 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite && node vite.localhost.js",
+		"dev": "run-p vite vitelocalhost",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
+		"vite": "vite",
 		"vitelocalhost": "node vite.localhost.js"
 	},
 	"dependencies": {

@@ -1,1 +1,1 @@
-console.log('LOCAL: http://localhost:5173');
+console.log('LAUNCH WITH COOKIE SUPPORT: http://localhost:5173');
