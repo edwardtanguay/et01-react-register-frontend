@@ -48,8 +48,12 @@ function App() {
 				{currentUser.accessGroups.includes('members') && (
 					<NavLink to="/members">Members</NavLink>
 				)}
-				<NavLink to="/register">Register</NavLink>
-				<NavLink to="/login">Login</NavLink>
+				{currentUser.accessGroups.includes('loggedOutUsers') && (
+					<NavLink to="/register">Register</NavLink>
+				)}
+				{currentUser.accessGroups.includes('loggedOutUsers') && (
+					<NavLink to="/login">Login</NavLink>
+				)}
 				{currentUser.accessGroups.includes('loggedInUsers') && (
 					<NavLink to="/logout">Logout</NavLink>
 				)}
@@ -72,7 +76,15 @@ function App() {
 					}
 				/>
 				{currentUser.accessGroups.includes('loggedInUsers') && (
-					<Route path="/logout" element={<PageLogout />} />
+					<Route
+						path="/logout"
+						element={
+							<PageLogout
+								baseUrl={baseUrl}
+								setCurrentUser={setCurrentUser}
+							/>
+						}
+					/>
 				)}
 				<Route path="/confirm-link" element={<PageConfirmLink />} />
 				<Route path="/" element={<Navigate to="/welcome" replace />} />
