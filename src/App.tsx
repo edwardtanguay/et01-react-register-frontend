@@ -13,6 +13,8 @@ import { Page404 } from './pages/Page404';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
+console.log(`*********** baseUrl = [${baseUrl}]`);
+
 function App() {
 	const [currentUser, setCurrentUser] = useState<IUser>({
 		username: '',
@@ -35,9 +37,6 @@ function App() {
 
 	return (
 		<div className="App">
-			<pre className="debug">
-				baseUrl = {baseUrl}
-			</pre>
 			<h1>Language Tandem Group</h1>
 			{currentUser.username !== 'anonymousUser' && (
 				<div className="userFullName">
