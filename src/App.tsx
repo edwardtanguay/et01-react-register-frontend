@@ -36,7 +36,7 @@ function App() {
 	return (
 		<div className="App">
 			<pre className="debug">
-				baseUrl = {baseUrl}
+				baseUrl = {baseUrl} (v2)
 			</pre>
 			<h1>Language Tandem Group</h1>
 			{currentUser.username !== 'anonymousUser' && (
