@@ -22,7 +22,7 @@ export const PageLogin = (props: IPageLoginProps) => {
 			const data = (
 				await axios.post(
 					`${baseUrl}/login`,
-					{ username, password },
+					{ username, password, safeOriginCode: import.meta.env.VITE_SAFE_ORIGIN_CODE },
 					{ withCredentials: true }
 				)
 			).data;

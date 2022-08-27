@@ -24,7 +24,7 @@ export const PageRegister = (props: IPageRegisterProps) => {
 			const data = (
 				await axios.post(
 					`${baseUrl}/register`,
-					{ firstName, lastName, username, password, email },
+					{ firstName, lastName, username, password, email, safeOriginCode: import.meta.env.VITE_SAFE_ORIGIN_CODE },
 					{ withCredentials: true }
 				)
 			).data;
