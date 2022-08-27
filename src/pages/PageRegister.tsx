@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { IUser } from '../interfaces';
-import { useNavigate } from 'react-router-dom';
 
 interface IPageRegisterProps {
 	baseUrl: string;
@@ -11,13 +10,13 @@ interface IPageRegisterProps {
 export const PageRegister = (props: IPageRegisterProps) => {
 	const { baseUrl, setCurrentUser } = props;
 	const [formMessage, setFormMessage] = useState('');
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
-
-	const navigate = useNavigate();
+	const [errors, setErrors] = useState([]);
+	const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
 	const handleRegisterButton = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
@@ -25,87 +24,123 @@ export const PageRegister = (props: IPageRegisterProps) => {
 			const data = (
 				await axios.post(
 					`${baseUrl}/register`,
-					{ username, password, firstName, lastName, email},
+					{ firstName, lastName, username, password, email },
 					{ withCredentials: true }
 				)
 			).data;
-			const _currentUser = data.currentUser;
-			if (_currentUser.username === 'anonymousUser') {
+			if (data.errors.length > 0) {
+				setErrors(data.errors);
+			} else {
 				setFormMessage('');
-				setUsername('');
-				setPassword('');
 				setFirstName('');
 				setLastName('');
+				setUsername('');
+				setPassword('');
 				setEmail('');
-				navigate('/login');
+				setErrors([]);
+				setRegistrationSuccessful(true);
 			}
 		})();
 	};
 
 	return (
-		<form>
-			<fieldset>
-				<div className="row">
-					<label>Username</label>
-					<div>
-						<input
-							autoFocus
-							type="text"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-						/>
-					</div>
+		<>
+			{registrationSuccessful ? (
+				<div className="registrationSuccessfulArea">
+					<p>Thank you for registering!</p>
+					<p>Please check your mail to confirm your email address.</p>
 				</div>
+			) : (
+				<>
+					<form>
+						<fieldset>
+							<div className="row">
+								<label>First Name</label>
+								<div>
+									<input
+										type="text"
+										autoFocus
+										value={firstName}
+										onChange={(e) =>
+											setFirstName(e.target.value)
+										}
+									/>
+								</div>
+							</div>
 
-				<div className="row">
-					<label>Password</label>
-					<div>
-						<input
-							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-					</div>
-				</div>
+							<div className="row">
+								<label>Last Name</label>
+								<div>
+									<input
+										type="text"
+										value={lastName}
+										onChange={(e) =>
+											setLastName(e.target.value)
+										}
+									/>
+								</div>
+							</div>
 
-				<div className="row">
-					<label>First Name</label>
-					<div>
-						<input
-							type="text"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
-						/>
-					</div>
-				</div>
+							<div className="row">
+								<label>Username</label>
+								<div>
+									<input
+										type="text"
+										value={username}
+										onChange={(e) =>
+											setUsername(e.target.value)
+										}
+									/>
+								</div>
+							</div>
 
-				<div className="row">
-					<label>Last Name</label>
-					<div>
-						<input
-							type="text"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
-						/>
-					</div>
-				</div>
+							<div className="row">
+								<label>Password</label>
+								<div>
+									<input
+										type="password"
+										value={password}
+										onChange={(e) =>
+											setPassword(e.target.value)
+										}
+									/>
+								</div>
+							</div>
 
-				<div className="row">
-					<label>Email</label>
-					<div>
-						<input
-							type="text"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-						/>
-					</div>
-				</div>
+							<div className="row">
+								<label>Email</label>
+								<div>
+									<input
+										type="text"
+										value={email}
+										onChange={(e) =>
+											setEmail(e.target.value)
+										}
+									/>
+								</div>
+							</div>
 
-				<div className="buttonRow">
-					<div className="formMessage">{formMessage}</div>
-					<button onClick={(e) => handleRegisterButton(e)}>Login</button>
-				</div>
-			</fieldset>
-		</form>
+							<div className="buttonRow">
+								<div className="formMessage">{formMessage}</div>
+								<button
+									onClick={(e) => handleRegisterButton(e)}
+								>
+									Login
+								</button>
+							</div>
+						</fieldset>
+					</form>
+					{errors.length > 0 && (
+						<div className="errorArea">
+							<ul>
+								{errors.map((error, i) => {
+									return <li key={i}>{error}</li>;
+								})}
+							</ul>
+						</div>
+					)}
+				</>
+			)}
+		</>
 	);
 };

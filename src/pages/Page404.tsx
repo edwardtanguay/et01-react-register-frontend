@@ -1,7 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 export const Page404 = () => {
-	return (
-		<div className="page404">
-			<p>404 Page not found</p>
-		</div>
-	);
+	const navigate = useNavigate();
+	navigate('/');
+
+	return (<div></div>);
 };

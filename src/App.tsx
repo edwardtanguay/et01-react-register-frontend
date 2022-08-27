@@ -8,7 +8,7 @@ import { PageMembers } from './pages/PageMembers';
 import { PageRegister } from './pages/PageRegister';
 import { PageLogin } from './pages/PageLogin';
 import { PageLogout } from './pages/PageLogout';
-import { PageConfirmLink } from './pages/PageConfirmLink';
+import { PageConfirmRegistration } from './pages/PageConfirmRegistration';
 import { Page404 } from './pages/Page404';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
@@ -77,9 +77,10 @@ function App() {
 						</span>
 					</span>
 				)}
-				{currentUser.accessGroups.includes('members') && (
-					<NavLink to="/members">Members</NavLink>
-				)}
+				{(currentUser.accessGroups.includes('members') ||
+					currentUser.accessGroups.includes(
+						'unconfirmedMembers'
+					)) && <NavLink to="/members">Members</NavLink>}
 				{currentUser.accessGroups.includes('loggedOutUsers') && (
 					<NavLink to="/register">Register</NavLink>
 				)}
@@ -95,9 +96,10 @@ function App() {
 			<Routes>
 				<Route path="*" element={<Page404 />} />
 				<Route path="/welcome" element={<PageWelcome />} />
-				{currentUser.accessGroups.includes('members') && (
-					<Route path="/members" element={<PageMembers />} />
-				)}
+				{(currentUser.accessGroups.includes('members') ||
+					currentUser.accessGroups.includes(
+						'unconfirmedMembers'
+					)) && <Route path="/members" element={<PageMembers currentUser={currentUser} />} />}
 				<Route
 					path="/register"
 					element={
@@ -127,7 +129,13 @@ function App() {
 						}
 					/>
 				)}
-				<Route path="/confirm-link" element={<PageConfirmLink />} />
+				<Route
+					path="/confirm-registration/:confirmationCode"
+					element={<PageConfirmRegistration
+								baseUrl={baseUrl}
+								setCurrentUser={setCurrentUser}
+					/>}
+				/>
 				<Route path="/" element={<Navigate to="/welcome" replace />} />
 			</Routes>
 		</div>
