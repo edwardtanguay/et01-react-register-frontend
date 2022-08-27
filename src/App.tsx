@@ -10,6 +10,8 @@ import { PageLogin } from './pages/PageLogin';
 import { PageLogout } from './pages/PageLogout';
 import { PageConfirmLink } from './pages/PageConfirmLink';
 import { Page404 } from './pages/Page404';
+import { useNavigate } from 'react-router-dom';
+import { FaSpinner } from 'react-icons/fa';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,6 +22,8 @@ function App() {
 		lastName: '',
 		accessGroups: [],
 	});
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		(async () => {
@@ -33,10 +37,31 @@ function App() {
 		})();
 	}, []);
 
+	const handleLogoutButton = () => {
+		(async () => {
+			const data = (
+				await axios.get(`${baseUrl}/logout`, {
+					withCredentials: true,
+				})
+			).data;
+			const _currentUser = data.currentUser;
+			if (_currentUser.username === 'anonymousUser') {
+				setCurrentUser(_currentUser);
+				navigate('/');
+			} else {
+				throw new Error('ERROR: no anonymous user');
+			}
+		})();
+	};
+
+	const pageIsLoaded = () => {
+		return currentUser.username !== '';
+	};
+
 	return (
 		<div className="App">
 			<h1>Language Tandem Group</h1>
-			{currentUser.username !== 'anonymousUser' && (
+			{pageIsLoaded() && currentUser.username !== 'anonymousUser' && (
 				<div className="userFullName">
 					<span>
 						{currentUser.firstName} {currentUser.lastName}
@@ -45,6 +70,13 @@ function App() {
 			)}
 			<nav>
 				<NavLink to="/welcome">Welcome</NavLink>
+				{!pageIsLoaded() && (
+					<span className="navCommand">
+						<span className="spinner">
+							<FaSpinner />
+						</span>
+					</span>
+				)}
 				{currentUser.accessGroups.includes('members') && (
 					<NavLink to="/members">Members</NavLink>
 				)}
@@ -55,10 +87,11 @@ function App() {
 					<NavLink to="/login">Login</NavLink>
 				)}
 				{currentUser.accessGroups.includes('loggedInUsers') && (
-					<NavLink to="/logout">Logout</NavLink>
+					<span className="navCommand" onClick={handleLogoutButton}>
+						Logout
+					</span>
 				)}
 			</nav>
-
 			<Routes>
 				<Route path="*" element={<Page404 />} />
 				<Route path="/welcome" element={<PageWelcome />} />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IUser } from '../interfaces';
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +38,10 @@ export const PageLogin = (props: IPageLoginProps) => {
 			}
 		})();
 	};
+
+	useEffect(() => {
+		setFormMessage('');
+	}, [username, password]);
 
 	return (
 		<form>

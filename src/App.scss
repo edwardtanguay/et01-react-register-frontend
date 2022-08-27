@@ -1,3 +1,5 @@
+$separatorColor: #3a3a3a;
+
 body {
 	background-color: #444;
 	color: #ccc;
@@ -21,8 +23,17 @@ body {
 		}
 
 		a:not(:last-of-type)::after {
-			color: #444;
-			content: ' | ';
+			color: $separatorColor;
+			content: '\00A0\00A0\00A0';
+		}
+
+		span.navCommand {
+			cursor: pointer;
+		}
+
+		span.navCommand::before {
+			color: $separatorColor;
+			content: '\00A0\00A0\00A0';
 		}
 
 		a.active {
@@ -40,6 +51,7 @@ body {
 
 	div.userFullName {
 		padding-top: .5rem;
+
 		span {
 			background-color: rgb(173, 119, 52);
 			color: black;
@@ -89,6 +101,12 @@ body {
 		}
 	}
 
+	.spinner {
+		color: #aaa;
+		display: inline-block;
+		animation: spin infinite 2s linear;
+	}
+
 	animation: fadein .5s ease-in;
 }
 
@@ -99,5 +117,15 @@ body {
 
 	to {
 		opacity: 1;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
 	}
 }
