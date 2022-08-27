@@ -16,7 +16,9 @@ export const PageLogout = (props: IPageLogoutProps) => {
 		(async () => {
 			const data = (
 				await axios.get(
-					`${baseUrl}/logout`)).data;
+					`${baseUrl}/logout`,{
+					withCredentials: true,
+				})).data;
 			const _currentUser = data.currentUser;
 			if (_currentUser.username === 'anonymousUser') {
 				setCurrentUser(_currentUser);

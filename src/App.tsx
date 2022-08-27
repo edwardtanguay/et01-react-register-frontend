@@ -65,7 +65,15 @@ function App() {
 				{currentUser.accessGroups.includes('members') && (
 					<Route path="/members" element={<PageMembers />} />
 				)}
-				<Route path="/register" element={<PageRegister />} />
+				<Route
+					path="/register"
+					element={
+						<PageRegister
+							baseUrl={baseUrl}
+							setCurrentUser={setCurrentUser}
+						/>
+					}
+				/>
 				<Route
 					path="/login"
 					element={
